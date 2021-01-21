@@ -30,7 +30,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'vue-style-loader', // 1st
+                    'style-loader', // 1st
                     'css-loader', // 2nd
                     'postcss-loader' // 3rd
                 ]
@@ -38,7 +38,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    'vue-style-loader', // 1st
+                    'style-loader', // 1st
                     'css-loader', // 2nd
                     'postcss-loader', // 3rd
                     'sass-loader' // 4th
