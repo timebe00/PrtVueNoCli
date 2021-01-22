@@ -13,8 +13,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+$color: red;
 h1{
-    color: red;
+    color: $color;
+    display: flex;
 }
 </style>

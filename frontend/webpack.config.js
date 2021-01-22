@@ -2,10 +2,22 @@ const path = require('path') // 파일이나 디렉터리 경로를 다루기 �
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 require('@babel/polyfill')
 
-module.exports = {
+//  Web Pack 처리과정
+//  entry -> module -> plugins -> module
+
+//  opts -> 개발, 옵션?
+module.exports = (env, opts) => {
+    const config = {
+            // 가져오기 확장자 생략 가능
+    resolve: {
+        extensions: ['.js', '.vue']
+    },
     //  진입점
     entry: {
         //  __dirname : 현재 위치를 알려주는 경로
@@ -65,9 +77,30 @@ module.exports = {
                 from: 'assets/',
                 to: ''
             }
-        ]})
-    ]
-}
+        ]
+    })
+    ],
+    }
 
-//  Web Pack 처리과정
-//  entry -> module -> plugins -> module
+    //  개발용
+    if (opts.mode === 'devlopement') {
+        return merge (config, {
+            // 빠르지만 용량 큼
+            devtool: 'eval',
+            devServer: {
+                //  브라우저 바로 열기
+                open: true,
+                hot: true
+            }
+        })
+        // 제품용
+    } else {
+        return merge (config, {
+            //  느리지만 용량 적음
+            devtool : 'cheap-module-source-map',
+            plugins: [
+                new CleanWebpackPlugin()
+            ]
+        })
+    }
+}
